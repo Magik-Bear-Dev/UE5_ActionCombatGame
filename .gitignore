@@ -45,3 +45,9 @@ Build/
 *.app
 *.dmg
 *.cs
+Source/ActionCombatGame/ActionCombatGame.cpp
+Source/ActionCombatGame/ActionCombatGameCharacter.cpp
+Source/ActionCombatGame/ActionCombatGame.h
+Source/ActionCombatGame/ActionCombatGameCharacter.h
+Source/ActionCombatGame/ActionCombatGameGameMode.cpp
+Source/ActionCombatGame/ActionCombatGameGameMode.h
