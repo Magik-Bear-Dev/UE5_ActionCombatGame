@@ -23,9 +23,33 @@ void ULockonComponent::BeginPlay()
 	
 }
 
-void ULockonComponent::StartLockon()
+void ULockonComponent::StartLockon(float Radius)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Lockon Started"));
+	FHitResult OutResult;
+	FVector CurrentLocation{ GetOwner()->GetActorLocation() };
+	FCollisionShape Sphere { FCollisionShape::MakeSphere(Radius) };
+	FCollisionQueryParams IgnoreParams {
+		FName { TEXT("Ignore Collision Params") },
+		false,
+		GetOwner()
+	};
+	
+	bool bHasFoundTarget {GetWorld()->SweepSingleByChannel(
+		OutResult,
+		CurrentLocation,
+		CurrentLocation,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel1,
+		Sphere,
+		IgnoreParams
+	) };
+
+	if (!bHasFoundTarget) { return; }
+	
+	UE_LOG(
+		LogTemp, Warning, TEXT("Actor Detected: %s"),
+		*OutResult.GetActor()->GetName()
+		);
 }
 
 
