@@ -4,6 +4,7 @@
 #include "Combat/LockonComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values for this component's properties
 ULockonComponent::ULockonComponent()
@@ -24,6 +25,23 @@ void ULockonComponent::BeginPlay()
 	OwnerRef = GetOwner<ACharacter>();
 	Controller = GetWorld()->GetFirstPlayerController();
 	MovementComp = OwnerRef->GetCharacterMovement();
+}
+
+// Called every frame
+void ULockonComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (!IsValid(CurrentTargetActor)) { return; }
+
+	FVector CurrentLocation { OwnerRef->GetActorLocation() };
+	FVector TargetLocation { CurrentTargetActor->GetActorLocation() };
+
+	FRotator NewRotation{ UKismetMathLibrary::FindLookAtRotation(
+		CurrentLocation, TargetLocation
+	) };
+
+	Controller->SetControlRotation(NewRotation);
 }
 
 void ULockonComponent::StartLockon(float Radius)
@@ -49,17 +67,10 @@ void ULockonComponent::StartLockon(float Radius)
 
 	if (!bHasFoundTarget) { return; }
 
+	CurrentTargetActor = OutResult.GetActor();
+
 	Controller->SetIgnoreLookInput(true);
 	MovementComp->bOrientRotationToMovement = false;
 	MovementComp->bUseControllerDesiredRotation = true;
-}
-
-
-// Called every frame
-void ULockonComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
