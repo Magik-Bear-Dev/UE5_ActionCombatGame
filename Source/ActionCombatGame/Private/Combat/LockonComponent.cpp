@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values for this component's properties
 ULockonComponent::ULockonComponent()
@@ -25,6 +26,7 @@ void ULockonComponent::BeginPlay()
 	OwnerRef = GetOwner<ACharacter>();
 	Controller = GetWorld()->GetFirstPlayerController();
 	MovementComp = OwnerRef->GetCharacterMovement();
+	SpringArmComp = OwnerRef->FindComponentByClass<USpringArmComponent>();
 }
 
 // Called every frame
@@ -36,6 +38,8 @@ void ULockonComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 	FVector CurrentLocation { OwnerRef->GetActorLocation() };
 	FVector TargetLocation { CurrentTargetActor->GetActorLocation() };
+
+	TargetLocation.Z -= 125;
 
 	FRotator NewRotation{ UKismetMathLibrary::FindLookAtRotation(
 		CurrentLocation, TargetLocation
@@ -72,5 +76,7 @@ void ULockonComponent::StartLockon(float Radius)
 	Controller->SetIgnoreLookInput(true);
 	MovementComp->bOrientRotationToMovement = false;
 	MovementComp->bUseControllerDesiredRotation = true;
+
+	SpringArmComp->TargetOffset = FVector {0.0, 0.0, 100.0};
 }
 
