@@ -39,6 +39,16 @@ void ULockonComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	FVector CurrentLocation { OwnerRef->GetActorLocation() };
 	FVector TargetLocation { CurrentTargetActor->GetActorLocation() };
 
+	double TargetDistance {
+		FVector::Distance(CurrentLocation, TargetLocation)
+	};
+
+	if (TargetDistance >= BreakDistance)
+	{
+		EndLockon();
+		return;
+	}
+
 	TargetLocation.Z -= 125;
 
 	FRotator NewRotation{ UKismetMathLibrary::FindLookAtRotation(
