@@ -16,10 +16,10 @@ class ACTIONCOMBATGAME_API UPlayerAnimInstance : public UAnimInstance
 	
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float CurrentVelocity { 0.0f };
+	float CurrentSpeed{ 0.0f };
 
 	UFUNCTION(BlueprintCallable)
-	void UpdateVelocity();
+	void UpdateSpeed();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool bIsInCombat{ false };
