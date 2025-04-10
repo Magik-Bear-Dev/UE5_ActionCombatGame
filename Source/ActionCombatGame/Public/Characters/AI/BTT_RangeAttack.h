@@ -14,6 +14,9 @@ class ACTIONCOMBATGAME_API UBTT_RangeAttack : public UBTTaskNode
 {
 	GENERATED_BODY()
 
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* AnimMontage;
+
 public:
 	virtual EBTNodeResult::Type ExecuteTask(
 		UBehaviorTreeComponent& OwnerComp,
