@@ -2,6 +2,8 @@
 
 
 #include "Combat/EnemyProjectile.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
 AEnemyProjectile::AEnemyProjectile()
@@ -31,6 +33,10 @@ void AEnemyProjectile::HandleBegiOverlap(AActor* OtherActor)
 
 	if (!PawnRef->IsPlayerControlled()) { return;};
 
-	UE_LOG(LogTemp, Warning, TEXT("Overlapped with Player"));
+	FindComponentByClass<UParticleSystemComponent>()
+		->SetTemplate(HitTemplate);
+
+	FindComponentByClass<UProjectileMovementComponent>()
+		->StopMovementImmediately();
 }
 
