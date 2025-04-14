@@ -8,6 +8,7 @@
 #include "Animations/BossAnimInstance.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 void UBTT_ChargeAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
@@ -71,6 +72,12 @@ void UBTT_ChargeAttack::ChargeAtPlayer()
 	ControllerRef->SetFocus(PlayerRef);
 
 	ControllerRef->ReceiveMoveCompleted.AddUnique(MoveCompletedDelegate);
+
+	OriginalWalkSpeed = CharacterRef->GetCharacterMovement()
+		->MaxWalkSpeed;
+
+	CharacterRef->GetCharacterMovement()
+		->MaxWalkSpeed = ChargeWalkSpeed;
 }
 
 void UBTT_ChargeAttack::HandleMoveCompleted()
@@ -86,6 +93,9 @@ void UBTT_ChargeAttack::HandleMoveCompleted()
 		1.0f,
 		false
 	);
+
+	CharacterRef->GetCharacterMovement()
+		->MaxWalkSpeed = OriginalWalkSpeed;
 }
 
 void UBTT_ChargeAttack::FinishAttackTask()

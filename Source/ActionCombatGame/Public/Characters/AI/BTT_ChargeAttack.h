@@ -25,6 +25,11 @@ class ACTIONCOMBATGAME_API UBTT_ChargeAttack : public UBTTaskNode
 
 	FScriptDelegate MoveCompletedDelegate;
 
+	float OriginalWalkSpeed;
+
+	UPROPERTY(EditAnywhere)
+	float ChargeWalkSpeed{ 2000.0f };
+
 protected:
 	virtual void TickTask(
 	UBehaviorTreeComponent& OwnerComp,
