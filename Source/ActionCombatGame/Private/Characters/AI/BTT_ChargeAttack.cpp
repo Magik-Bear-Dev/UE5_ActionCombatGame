@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "Animations/BossAnimInstance.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "EntitySystem/MovieSceneEntitySystemRunner.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -27,6 +28,12 @@ void UBTT_ChargeAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 
 		ChargeAtPlayer();
 	}
+
+	if (!bIsFinished) { return; }
+
+	ControllerRef->ReceiveMoveCompleted.Remove(MoveCompletedDelegate);
+
+	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 }
 
 UBTT_ChargeAttack::UBTT_ChargeAttack()
@@ -53,6 +60,8 @@ EBTNodeResult::Type UBTT_ChargeAttack::ExecuteTask(UBehaviorTreeComponent& Owner
 		->SetValueAsBool(
 			TEXT("IsReadyToCharge"), false
 		);
+
+	bIsFinished = false;
 	
 	return EBTNodeResult::InProgress;
 }
@@ -100,5 +109,5 @@ void UBTT_ChargeAttack::HandleMoveCompleted()
 
 void UBTT_ChargeAttack::FinishAttackTask()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Task Finished"));
+	bIsFinished = true;
 }

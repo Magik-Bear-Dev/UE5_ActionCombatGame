@@ -30,6 +30,8 @@ class ACTIONCOMBATGAME_API UBTT_ChargeAttack : public UBTTaskNode
 	UPROPERTY(EditAnywhere)
 	float ChargeWalkSpeed{ 2000.0f };
 
+	bool bIsFinished { false };
+
 protected:
 	virtual void TickTask(
 	UBehaviorTreeComponent& OwnerComp,
