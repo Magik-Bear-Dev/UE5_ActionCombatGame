@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "Animations/BossAnimInstance.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Navigation/PathFollowingComponent.h"
 
 
 void UBTT_ChargeAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
@@ -52,5 +53,15 @@ EBTNodeResult::Type UBTT_ChargeAttack::ExecuteTask(UBehaviorTreeComponent& Owner
 
 void UBTT_ChargeAttack::ChargeAtPlayer()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Running!"));
+	APawn* PlayerRef{
+		GetWorld()->GetFirstPlayerController()->GetPawn()
+	};
+	FVector PlayerLocation{ PlayerRef->GetActorLocation() };
+
+	FAIMoveRequest MoveRequest{ PlayerLocation };
+	MoveRequest.SetUsePathfinding(true);
+	MoveRequest.SetAcceptanceRadius(AcceptableRadius);
+
+	ControllerRef->MoveTo(MoveRequest);
+	ControllerRef->SetFocus(PlayerRef);
 }
