@@ -46,4 +46,6 @@ public:
 	virtual float GetDamage() override;
 
 	virtual void Attack() override;
+
+	virtual float GetAnimDuration() override;
 };
