@@ -24,9 +24,6 @@ class ACTIONCOMBATGAME_API UBTT_MeleeAttack : public UBTTaskNode
 	FScriptDelegate MoveDelegate;
 
 	bool bIsFinished{ false };
-
-	UPROPERTY(EditAnywhere)
-	float MeleeRange{ 1250.0f };
 	
 protected:
 	virtual EBTNodeResult::Type ExecuteTask(
