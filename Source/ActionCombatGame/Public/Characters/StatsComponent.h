@@ -48,4 +48,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void EnableRegen();
+
+	UFUNCTION(BlueprintPure)
+	float GetStatPercentage(EStat Current, EStat Max);
 };
