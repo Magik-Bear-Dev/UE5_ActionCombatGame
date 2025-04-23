@@ -99,12 +99,27 @@ void ABossCharacter::HandlePlayerDeath()
 
 void ABossCharacter::HandleDeath()
 {
-	PlayAnimMontage(DeathAnim);
+	float Duration{ PlayAnimMontage(DeathAnim) };
 
 	ControllerRef->GetBrainComponent()
 		->StopLogic(TEXT("defeated"));
 
 	FindComponentByClass<UCapsuleComponent>()
 		->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	FTimerHandle DestroyTimerHandle;
+
+	GetWorld()->GetTimerManager().SetTimer(
+		DestroyTimerHandle,
+		this,
+		&ABossCharacter::FinishDeathAnim,
+		Duration,
+		false
+	);
+}
+
+void ABossCharacter::FinishDeathAnim()
+{
+	Destroy();
 }
 
