@@ -9,6 +9,7 @@
 #include "Characters/MainCharacter.h"
 #include "BrainComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Interfaces/MainPlayer.h"
 
 // Sets default values
 ABossCharacter::ABossCharacter()
@@ -116,6 +117,15 @@ void ABossCharacter::HandleDeath()
 		Duration,
 		false
 	);
+
+	IMainPlayer* PlayerRef{
+		GetWorld()->GetFirstPlayerController()
+			->GetPawn<IMainPlayer>()
+	};
+
+	if (!PlayerRef) { return; }
+
+	PlayerRef->EndLockonWithActor(this);
 }
 
 void ABossCharacter::FinishDeathAnim()

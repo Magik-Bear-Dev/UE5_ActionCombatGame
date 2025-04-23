@@ -66,3 +66,10 @@ void AMainCharacter::HandleDeath()
 	DisableInput(GetController<APlayerController>());
 }
 
+void AMainCharacter::EndLockonWithActor(AActor* ActorRef)
+{
+	if (LockonComp->CurrentTargetActor != ActorRef) { return; }
+
+	LockonComp->EndLockon();
+}
+
