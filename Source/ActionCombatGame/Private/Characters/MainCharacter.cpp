@@ -84,8 +84,14 @@ bool AMainCharacter::CanTakeDamage(AActor* Opponent)
 	return true;
 }
 
-void AMainCharacter::PlayHurtAnim()
+void AMainCharacter::PlayHurtAnim(TSubclassOf<class UCameraShakeBase> CameraShaekeTemplate)
 {
 	PlayAnimMontage(HurtAnimMontage);
+
+	if (CameraShaekeTemplate)
+	{
+		GetController<APlayerController>()
+			->ClientStartCameraShake(CameraShaekeTemplate);
+	}
 }
 
