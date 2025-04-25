@@ -75,6 +75,8 @@ void AMainCharacter::EndLockonWithActor(AActor* ActorRef)
 
 bool AMainCharacter::CanTakeDamage(AActor* Opponent)
 {
+	if (PlayerActionsComp->bIsRollActive) { return false; }
+	
 	if (PlayerAnim->bIsBlocking)
 	{
 		return BlockComp->Check(Opponent);
