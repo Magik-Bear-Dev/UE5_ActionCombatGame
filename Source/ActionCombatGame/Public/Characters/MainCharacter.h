@@ -16,6 +16,9 @@ class ACTIONCOMBATGAME_API AMainCharacter : public ACharacter, public IMainPlaye
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* DeathAnimMontage;
 
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* HurtAnimMontage;
+
 public:
 	// Sets default values for this character's properties
 	AMainCharacter();
@@ -62,4 +65,7 @@ public:
 	virtual void EndLockonWithActor(AActor* ActorRef) override;
 	
 	virtual bool CanTakeDamage(AActor* Opponent) override;
+
+	UFUNCTION(BlueprintCallable)
+	void PlayHurtAnim();
 };
